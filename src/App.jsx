@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import placeHolder from "./assets/img/placeholder-600x400.png";
+import placeHolder from "./assets/img/600x400.svg";
 
 const defaultFormValue = {
-  id: 0,
   title: "",
   author: "",
   content: "",
@@ -34,19 +33,11 @@ function App() {
       ...articleFormInput,
       [e.target.name]: value,
     });
-
-    console.log(articleFormInput);
   };
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    const articleList = [...articlesData];
-    articleFormInput
-      ? articleList.push(articleFormInput)
-      : alert("Nessun valore inserito");
-
-    setArticlesData(articleList);
-    setArticleFormInput(defaultFormValue);
+    console.log(articleFormInput);
   };
 
   const deleteArticle = (id) => {
@@ -59,15 +50,15 @@ function App() {
       });
   };
 
-  const modifyArticle = (id) => {
-    const updatedList = [...articlesData];
-    articleFormInput
-      ? (updatedList[id] = articleFormInput)
-      : alert("Nessun valore inserito");
+  // const modifyArticle = (id) => {
+  //   const updatedList = [...articlesData];
+  //   articleFormInput
+  //     ? (updatedList[id] = articleFormInput)
+  //     : alert("Nessun valore inserito");
 
-    setArticlesData(updatedList);
-    setArticleFormInput(defaultFormValue);
-  };
+  //   setArticlesData(updatedList);
+  //   setArticleFormInput(defaultFormValue);
+  // };
 
   useEffect(() => {
     fetchArticlesData();
