@@ -26,10 +26,6 @@ function App() {
       });
   };
 
-  useEffect(() => {
-    fetchArticlesData();
-  }, []);
-
   const handleInputChange = (e) => {
     const value =
       e.target.type === "checkbox" ? e.target.checked : e.target.value;
@@ -54,8 +50,13 @@ function App() {
   };
 
   const deleteArticle = (id) => {
-    const updatedList = articlesData.filter((article, i) => i !== id);
-    setArticlesData(updatedList);
+    fetch(`http://localhost:3000/posts/${id}`, {
+      method: "DELETE",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setArticlesData(data);
+      });
   };
 
   const modifyArticle = (id) => {
@@ -67,6 +68,10 @@ function App() {
     setArticlesData(updatedList);
     setArticleFormInput(defaultFormValue);
   };
+
+  useEffect(() => {
+    fetchArticlesData();
+  }, []);
 
   return (
     <>
@@ -133,11 +138,11 @@ function App() {
                         <option value="" disabled>
                           Categoria
                         </option>
-                        <option value={"Uno"}>Uno</option>
-                        <option value={"Due"}>Due</option>
-                        <option value={"Tre"}>Tre</option>
-                        <option value={"Quattro"}>Quattro</option>
-                        <option value={"Cinque"}>Cinque</option>
+                        <option value={"Snack"}>Snack</option>
+                        <option value={"Antipasti"}>Antipasti</option>
+                        <option value={"Primi"}>Primi</option>
+                        <option value={"Secondi"}>Secondi</option>
+                        <option value={"Dolci"}>Dolci</option>
                       </select>
                     </div>
 
@@ -192,9 +197,9 @@ function App() {
             <section>
               <div className="row g-5 justify-content-around pb-5">
                 {articleFormInput &&
-                  articlesData.map((article, i) => {
+                  articlesData.map((article) => {
                     return (
-                      <div key={i} className="col-md-6 col-lg-4">
+                      <div key={article.id} className="col-md-6 col-lg-4">
                         <div className="card card-main">
                           <img
                             src={article.image || placeHolder}
@@ -223,14 +228,14 @@ function App() {
                             <div className="d-flex justify-content-end">
                               <div>
                                 <button
-                                  className="btn btn-warning mx-1 card-btn"
-                                  onClick={() => modifyArticle(i)}
+                                  className="btn btn-warning mx-1"
+                                  onClick={() => modifyArticle(article.id)}
                                 >
                                   <i className="fa-solid fa-pencil"></i>
                                 </button>
                                 <button
-                                  className="btn btn-danger mx-1 card-btn"
-                                  onClick={() => deleteArticle(i)}
+                                  className="btn btn-danger mx-1"
+                                  onClick={() => deleteArticle(article.id)}
                                 >
                                   <i className="fa-solid fa-trash"></i>
                                 </button>
