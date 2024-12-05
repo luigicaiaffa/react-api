@@ -3,8 +3,8 @@
 /* # Body  */
 
 .wrapper {
-    min-height: 100vh;
-    background-color: #192030;
+  min-height: 100vh;
+  background-color: #192030;
 }
 
 /* ! Components ! */
@@ -12,10 +12,12 @@
 /* # Card Main */
 
 .card-main {
-    max-width: 25rem;
+  cursor: pointer;
+  min-height: 100%;
 }
-  
-.pubblished-status {
-    position: absolute;
-    bottom: 1rem;
+
+.card-main-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }

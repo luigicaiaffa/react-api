@@ -201,38 +201,35 @@ function App() {
                             className="card-img-top"
                             alt="img"
                           />
-                          <div className="card-body">
-                            <div>
+                          <div className="card-body card-main-body">
+                            <div className="d-flex justify-content-between">
                               <span className="form-text">
                                 {article.category}
                               </span>
-                              <h5 className="card-title">{article.title}</h5>
                               <span>
-                                <i>&#45; {article.author}</i>
+                                {article.pubblished ? (
+                                  <i className="fa-solid fa-square-check text-success"></i>
+                                ) : (
+                                  <i className="fa-solid fa-square-xmark text-danger"></i>
+                                )}
                               </span>
-                              <p className="card-text pb-2">
-                                {article.content}
-                              </p>
                             </div>
-                            <div className="d-flex justify-content-between">
-                              <div>
-                                <span>
-                                  {article.pubblished ? (
-                                    <i className="fa-solid fa-square-check pubblished-status"></i>
-                                  ) : (
-                                    <i className="fa-solid fa-square-xmark pubblished-status"></i>
-                                  )}
-                                </span>
-                              </div>
+                            <h5 className="card-title">{article.title}</h5>
+                            <span>
+                              <i>&#45; {article.author}</i>
+                            </span>
+                            <p className="card-text pb-2">{article.content}</p>
+
+                            <div className="d-flex justify-content-end">
                               <div>
                                 <button
-                                  className="btn btn-warning mx-1"
+                                  className="btn btn-warning mx-1 card-btn"
                                   onClick={() => modifyArticle(i)}
                                 >
                                   <i className="fa-solid fa-pencil"></i>
                                 </button>
                                 <button
-                                  className="btn btn-danger mx-1"
+                                  className="btn btn-danger mx-1 card-btn"
                                   onClick={() => deleteArticle(i)}
                                 >
                                   <i className="fa-solid fa-trash"></i>
