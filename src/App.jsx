@@ -9,7 +9,6 @@ const defaultFormValue = {
   content: "",
   image: "",
   category: "",
-  tags: [],
   pubblished: false,
 };
 
@@ -17,6 +16,7 @@ function App() {
   const [articleFormInput, setArticleFormInput] = useState(defaultFormValue);
   const [articlesData, setArticlesData] = useState([]);
 
+  // # GET
   const fetchArticlesData = () => {
     fetch("http://localhost:3000/posts")
       .then((res) => res.json())
@@ -25,21 +25,18 @@ function App() {
       });
   };
 
-  const handleInputChange = (e) => {
-    const value =
-      e.target.type === "checkbox" ? e.target.checked : e.target.value;
-
-    setArticleFormInput({
-      ...articleFormInput,
-      [e.target.name]: value,
-    });
+  // # POST
+  const createArticle = (data) => {
+    fetch("http://localhost:3000/posts", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    })
+      .then((res) => res.json())
+      .then(() => fetchArticlesData());
   };
 
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
-    console.log(articleFormInput);
-  };
-
+  // # DELETE
   const deleteArticle = (id) => {
     fetch(`http://localhost:3000/posts/${id}`, {
       method: "DELETE",
@@ -50,6 +47,7 @@ function App() {
       });
   };
 
+  // PUT & PATCH
   // const modifyArticle = (id) => {
   //   const updatedList = [...articlesData];
   //   articleFormInput
@@ -60,9 +58,25 @@ function App() {
   //   setArticleFormInput(defaultFormValue);
   // };
 
+  // # Form
+  const handleInputChange = (e) => {
+    const value =
+      e.target.type === "checkbox" ? e.target.checked : e.target.value;
+
+    setArticleFormInput({
+      ...articleFormInput,
+      [e.target.name]: value,
+    });
+  };
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    console.log(articleFormInput);
+    createArticle(articleFormInput);
+  };
+
   useEffect(() => {
     fetchArticlesData();
-  }, []);
+  }, [articleFormInput]);
 
   return (
     <>
@@ -131,6 +145,7 @@ function App() {
                         </option>
                         <option value={"Snack"}>Snack</option>
                         <option value={"Antipasti"}>Antipasti</option>
+                        <option value={"Pizze"}>Pizze</option>
                         <option value={"Primi"}>Primi</option>
                         <option value={"Secondi"}>Secondi</option>
                         <option value={"Dolci"}>Dolci</option>
@@ -149,6 +164,7 @@ function App() {
                       />
                     </div>
 
+                    {/* NB to modify */}
                     {articlesData.length > 0 && (
                       <div className="form-text mt-2">
                         &#45; modificare un articolo: inserire i nuovi dati nel
@@ -158,15 +174,15 @@ function App() {
                     )}
 
                     <div className="col-12 d-flex">
+                      {/* Submit Button */}
                       <div>
-                        {/* Submit Button */}
                         <button type="submit" className="btn btn-success">
                           <i className="fa-solid fa-plus fa-xl"></i>
                         </button>
                       </div>
 
+                      {/* Published Check */}
                       <div className="form-check mx-3">
-                        {/* Published Check */}
                         <label className="form-check-label">
                           <input
                             name="pubblished"
@@ -192,16 +208,22 @@ function App() {
                     return (
                       <div key={article.id} className="col-md-6 col-lg-4">
                         <div className="card card-main">
+                          {/* Card img */}
                           <img
                             src={article.image || placeHolder}
                             className="card-img-top"
                             alt="img"
                           />
+
+                          {/* Card body */}
                           <div className="card-body card-main-body">
                             <div className="d-flex justify-content-between">
+                              {/* category */}
                               <span className="form-text">
                                 {article.category}
                               </span>
+
+                              {/* pubblished */}
                               <span>
                                 {article.pubblished ? (
                                   <i className="fa-solid fa-square-check text-success"></i>
@@ -210,20 +232,42 @@ function App() {
                                 )}
                               </span>
                             </div>
+
+                            {/* title */}
                             <h5 className="card-title">{article.title}</h5>
+
+                            {/* author */}
                             <span>
                               <i>&#45; {article.author}</i>
                             </span>
+
+                            {/* content */}
                             <p className="card-text pb-2">{article.content}</p>
 
                             <div className="d-flex justify-content-end">
+                              {/* tags */}
+                              <div className="d-none">
+                                {/* {article.tags.map((tag, i) => (
+                                  <span
+                                    key={i}
+                                    className="me-1 badge rounded-pill text-bg-success"
+                                  >
+                                    {tag}
+                                  </span>
+                                ))} */}
+                              </div>
+
+                              {/* buttons */}
                               <div>
+                                {/* modify */}
                                 <button
-                                  className="btn btn-warning mx-1"
+                                  className="btn btn-warning mx-1 d-none"
                                   onClick={() => modifyArticle(article.id)}
                                 >
                                   <i className="fa-solid fa-pencil"></i>
                                 </button>
+
+                                {/* delete */}
                                 <button
                                   className="btn btn-danger mx-1"
                                   onClick={() => deleteArticle(article.id)}

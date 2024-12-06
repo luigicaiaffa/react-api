@@ -7,6 +7,12 @@
   background-color: #192030;
 }
 
+/* img */
+
+img {
+  max-width: 100%;
+}
+
 /* ! Components ! */
 
 /* # Card Main */
