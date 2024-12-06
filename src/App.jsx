@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import * as bootstrap from "bootstrap";
 
 import placeHolder from "./assets/img/600x400.svg";
 
@@ -13,10 +14,11 @@ const defaultFormValue = {
 };
 
 function App() {
+  // # UseState
   const [articleFormInput, setArticleFormInput] = useState(defaultFormValue);
   const [articlesData, setArticlesData] = useState([]);
 
-  // # GET
+  // * GET
   const fetchArticlesData = () => {
     fetch("http://localhost:3000/posts")
       .then((res) => res.json())
@@ -25,7 +27,7 @@ function App() {
       });
   };
 
-  // # POST
+  // * POST
   const createArticle = (data) => {
     fetch("http://localhost:3000/posts", {
       method: "POST",
@@ -39,7 +41,7 @@ function App() {
       });
   };
 
-  // # DELETE
+  // * DELETE
   const deleteArticle = (id) => {
     fetch(`http://localhost:3000/posts/${id}`, {
       method: "DELETE",
@@ -50,7 +52,7 @@ function App() {
       });
   };
 
-  // # PUT
+  // * PUT
   const modifyArticle = (id, data) => {
     fetch(`http://localhost:3000/posts/${id}`, {
       method: "PUT",
@@ -81,6 +83,7 @@ function App() {
     createArticle(articleFormInput);
   };
 
+  // # UseEffect
   useEffect(() => {
     fetchArticlesData();
   }, [articleFormInput]);
@@ -253,18 +256,6 @@ function App() {
                             <p className="card-text pb-2">{article.content}</p>
 
                             <div className="d-flex justify-content-end">
-                              {/* tags */}
-                              <div className="d-none">
-                                {/* {article.tags.map((tag, i) => (
-                                  <span
-                                    key={i}
-                                    className="me-1 badge rounded-pill text-bg-success"
-                                  >
-                                    {tag}
-                                  </span>
-                                ))} */}
-                              </div>
-
                               {/* buttons */}
                               <div>
                                 {/* modify */}
