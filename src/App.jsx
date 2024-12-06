@@ -33,7 +33,10 @@ function App() {
       body: JSON.stringify(data),
     })
       .then((res) => res.json())
-      .then(() => fetchArticlesData());
+      .then(() => {
+        fetchArticlesData();
+        setArticleFormInput(defaultFormValue);
+      });
   };
 
   // # DELETE
@@ -47,16 +50,19 @@ function App() {
       });
   };
 
-  // PUT & PATCH
-  // const modifyArticle = (id) => {
-  //   const updatedList = [...articlesData];
-  //   articleFormInput
-  //     ? (updatedList[id] = articleFormInput)
-  //     : alert("Nessun valore inserito");
-
-  //   setArticlesData(updatedList);
-  //   setArticleFormInput(defaultFormValue);
-  // };
+  // # PUT
+  const modifyArticle = (id, data) => {
+    fetch(`http://localhost:3000/posts/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    })
+      .then((res) => res.json())
+      .then(() => {
+        fetchArticlesData();
+        setArticleFormInput(defaultFormValue);
+      });
+  };
 
   // # Form
   const handleInputChange = (e) => {
@@ -68,6 +74,7 @@ function App() {
       [e.target.name]: value,
     });
   };
+
   const handleFormSubmit = (e) => {
     e.preventDefault();
     console.log(articleFormInput);
@@ -155,6 +162,7 @@ function App() {
                     {/* Content Input */}
                     <div className="col-12">
                       <textarea
+                        required
                         name="content"
                         type="text"
                         className="form-control"
@@ -261,8 +269,10 @@ function App() {
                               <div>
                                 {/* modify */}
                                 <button
-                                  className="btn btn-warning mx-1 d-none"
-                                  onClick={() => modifyArticle(article.id)}
+                                  className="btn btn-warning mx-1"
+                                  onClick={() =>
+                                    modifyArticle(article.id, articleFormInput)
+                                  }
                                 >
                                   <i className="fa-solid fa-pencil"></i>
                                 </button>
